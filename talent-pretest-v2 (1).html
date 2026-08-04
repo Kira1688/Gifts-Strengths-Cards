@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>探索天賦優勢親子營｜前置探索表單</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700;900&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{min-height:100%;font-family:"Noto Sans TC",sans-serif;background:#E0D5F5;color:#2C2118;}
+
+.header{background:#7B5EA7;padding:24px 20px 20px;text-align:center;}
+.header-label{font-size:10px;letter-spacing:.4em;color:rgba(255,255,255,.6);margin-bottom:8px;}
+.header-title{font-family:"Noto Serif TC",serif;font-size:clamp(20px,4vw,28px);font-weight:900;color:#fff;margin-bottom:4px;}
+.header-sub{font-size:12px;color:rgba(255,255,255,.65);letter-spacing:.1em;}
+
+.progress-bar{height:5px;background:rgba(255,255,255,.2);}
+.progress-fill{height:5px;background:#F5C842;transition:width .5s ease;}
+
+.container{max-width:560px;margin:0 auto;padding:28px 16px 80px;}
+
+.step-badge{display:inline-block;background:#7B5EA7;color:#fff;font-size:10px;letter-spacing:.25em;padding:4px 12px;border-radius:99px;margin-bottom:12px;}
+.step-title{font-family:"Noto Serif TC",serif;font-size:clamp(17px,3.5vw,22px);font-weight:900;color:#2C2118;margin-bottom:5px;line-height:1.4;}
+.step-hint{font-size:12px;color:#7B5EA7;margin-bottom:24px;letter-spacing:.05em;}
+
+.role-row{display:flex;gap:12px;margin-bottom:28px;}
+.role-card{flex:1;padding:20px 8px;border-radius:18px;border:2px solid #D0C0F0;background:#fff;cursor:pointer;text-align:center;transition:all .2s;box-shadow:0 2px 8px rgba(123,94,167,.08);}
+.role-card.active{border-color:#7B5EA7;background:#F3EEFF;box-shadow:0 4px 16px rgba(123,94,167,.18);}
+.role-card .ri{font-size:32px;margin-bottom:8px;}
+.role-card .rt{font-size:13px;font-weight:700;}
+
+.input-wrap{margin-bottom:20px;}
+.input-label{font-size:14px;font-weight:600;color:#7B5EA7;letter-spacing:.1em;margin-bottom:8px;display:block;}
+.input-field{width:100%;padding:14px 16px;border-radius:14px;border:2px solid #D0C0F0;background:#fff;font-size:15px;font-family:"Noto Sans TC",sans-serif;color:#2C2118;outline:none;transition:border .2s;}
+.input-field:focus{border-color:#7B5EA7;}
+
+/* 量表卡 — 不顯示五行 */
+.scale-card{background:#fff;border:2px solid #E8DFF8;border-radius:20px;padding:18px;margin-bottom:12px;box-shadow:0 2px 8px rgba(123,94,167,.07);transition:border .2s;}
+.scale-card.answered{border-color:#7B5EA7;}
+.scale-idx{font-size:10px;color:#ccc;letter-spacing:.1em;margin-bottom:4px;}
+.scale-cn{font-family:"Noto Serif TC",serif;font-size:18px;font-weight:900;color:#2C2118;margin-bottom:6px;}
+.scale-def{font-family:"Noto Serif TC",serif;font-size:16px;font-weight:700;color:#2C2118;line-height:1.85;margin-bottom:14px;}
+.scale-row{display:flex;align-items:center;gap:0;}
+.scale-label-l{font-size:10px;color:#aaa;white-space:nowrap;margin-right:8px;}
+.scale-label-r{font-size:10px;color:#aaa;white-space:nowrap;margin-left:8px;}
+.scale-btns{display:flex;gap:6px;flex:1;justify-content:center;}
+.scale-btn{width:38px;height:38px;border-radius:50%;border:2px solid #D0C0F0;background:#fff;cursor:pointer;font-size:13px;font-weight:700;color:#aaa;transition:all .2s;display:flex;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent;}
+.scale-btn.sel{background:#7B5EA7;border-color:#7B5EA7;color:#fff;box-shadow:0 2px 8px rgba(123,94,167,.3);}
+
+.q-progress{text-align:right;font-size:11px;color:#7B5EA7;margin-bottom:16px;letter-spacing:.05em;}
+
+.btn-next{width:100%;padding:17px;border-radius:99px;background:#2C2118;color:#F5C842;font-size:15px;font-family:"Noto Serif TC",serif;font-weight:700;letter-spacing:.12em;border:none;cursor:pointer;transition:all .2s;margin-top:8px;}
+.btn-next:disabled{opacity:.3;cursor:not-allowed;}
+.btn-next:not(:disabled):active{transform:scale(.98);}
+.btn-back{width:100%;padding:14px;border-radius:99px;background:transparent;color:#7B5EA7;
+  font-size:14px;font-weight:700;letter-spacing:.08em;border:2px solid #D0C0F0;cursor:pointer;margin-top:10px;}
+.btn-back:active{transform:scale(.98);}
+
+.done-wrap{text-align:center;padding:48px 20px;}
+.done-icon{font-size:60px;margin-bottom:20px;}
+.done-title{font-family:"Noto Serif TC",serif;font-size:22px;font-weight:900;color:#2C2118;margin-bottom:12px;}
+.done-sub{font-size:14px;color:#7B5EA7;line-height:1.9;margin-bottom:28px;}
+.done-tag{display:inline-block;background:#7B5EA7;color:#fff;font-size:11px;padding:7px 18px;border-radius:99px;letter-spacing:.12em;}
+
+.section{display:none;}
+.section.active{display:block;}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-label">優勢寫作學院 × SEL 5Q</div>
+  <div class="header-title">探索天賦優勢親子營</div>
+  <div class="header-sub">課程前置探索表單</div>
+</div>
+<div class="progress-bar"><div class="progress-fill" id="prog" style="width:0%"></div></div>
+
+<div class="container">
+
+  <!-- S0：角色 -->
+  <div class="section active" id="s0">
+    <div class="step-badge">開始之前</div>
+    <div class="step-title">你是以哪個身份<br>填寫這份表單？</div>
+    <div class="step-hint">請選擇你的角色</div>
+    <div class="role-row">
+      <div class="role-card" id="rp" onclick="setRole('家長')">
+        <div class="ri">🧑‍🦱</div><div class="rt">我是家長</div>
+      </div>
+      <div class="role-card" id="rc" onclick="setRole('孩子')">
+        <div class="ri">🧒</div><div class="rt">我是孩子</div>
+      </div>
+    </div>
+
+    <div class="input-wrap" id="memberWrap" style="display:none;">
+      <label class="input-label">請選擇你的身份</label>
+      <div class="role-row" id="memberRow"></div>
+    </div>
+
+    <div class="input-wrap">
+      <label class="input-label">家庭編號（報名時收到）</label>
+      <input class="input-field" id="fid" placeholder="例如：A" oninput="chk0()" onblur="tidyFid()">
+      <div style="font-size:13px;color:#888;margin-top:7px;line-height:1.65;">
+        同一個家庭請填寫相同的編號，系統會自動轉成大寫</div>
+    </div>
+    <div class="input-wrap">
+      <label class="input-label">你的姓名（請分開填寫）</label>
+      <div style="display:flex;gap:10px;">
+        <div style="flex:1;">
+          <input class="input-field" id="usurname" placeholder="姓（例：王）" oninput="chk0()">
+        </div>
+        <div style="flex:2;">
+          <input class="input-field" id="ugiven" placeholder="名（例：小明）" oninput="chk0()">
+        </div>
+      </div>
+      <div style="font-size:13px;color:#888;margin-top:7px;line-height:1.65;">
+        報告的標題會用全名，內文會用「名」來稱呼你。<br>
+        請填寫正式的本名，不要填綽號。</div>
+    </div>
+    <button class="btn-next" id="b0" disabled onclick="go(1)">開始探索 ✦</button>
+  </div>
+
+
+  <!-- S1：說明 -->
+  <div class="section" id="s1">
+    <div class="step-badge">填寫說明</div>
+    <div class="step-title">接下來有34種<br>天賦特質的描述</div>
+    <div class="step-hint">憑直覺回答，約需 8-10 分鐘</div>
+    <div style="background:#F3EEFF;border:2px solid #7B5EA7;border-radius:18px;padding:20px;margin-bottom:28px;">
+      <div style="font-size:15px;color:#2C2118;line-height:1.9;">
+        每一個描述一種天賦特質，<br>
+        請憑感覺回答<br>
+        <strong>「這有多像現實中的你？」</strong><br><br>
+        <div style="display:flex;justify-content:space-between;font-size:13px;color:#7B5EA7;font-weight:600;">
+          <span>完全不像我</span>
+          <span>有時像</span>
+          <span>非常像我</span>
+        </div>
+      </div>
+    </div>
+    <div style="background:#FEF3E8;border:2px solid #F7B89A;border-radius:18px;padding:18px 20px;margin-bottom:28px;">
+      <div style="font-size:15px;color:#8a5a2e;line-height:1.95;font-weight:600;">
+        ✦ 請憑第一直覺作答，不用反覆思考<br>
+        ✦ 盡量避免大量選擇「有時像」，才能看出你真正的樣子<br>
+        ✦ 全程約 8-10 分鐘，找一個不被打斷的時間填寫
+      </div>
+    </div>
+    <button class="btn-next" onclick="go(2)">開始作答 →</button>
+  </div>
+
+  <!-- S2：34題（分5頁） -->
+  <div class="section" id="s2">
+    <div class="step-badge" id="qbadge">天賦探索</div>
+    <div class="step-title">這有多像<br>現實中的你？</div>
+    <div class="step-hint">憑直覺選，避免全部都選「有時像」</div>
+    <div class="q-progress" id="qprog">0 / 34 完成</div>
+    <div id="qList"></div>
+    <div id="qWarn" style="display:none;background:#FEF3E8;border:2px solid #F7B89A;border-radius:14px;
+      padding:14px 16px;margin-bottom:8px;font-size:14px;line-height:1.75;color:#8a5a2e;font-weight:600;"></div>
+    <div id="qFail" style="display:none;background:#FEF3E8;border:2px solid #F7B89A;border-radius:14px;
+      padding:14px 16px;margin-bottom:8px;font-size:14px;line-height:1.75;color:#8a5a2e;font-weight:600;">
+      送出沒有成功，可能是網路不穩。<br>你的答案都還在，請再按一次送出。</div>
+    <button class="btn-next" id="b2" onclick="qNext()">下一頁 →</button>
+    <button class="btn-back" id="b2back" onclick="qPrev()">← 上一頁</button>
+  </div>
+
+
+  <!-- S2b：排序頁（條件式觸發） -->
+  <div class="section" id="s2b">
+    <div class="step-hint" style="margin-bottom:14px;" id="sortLead"></div>
+    <div style="background:#FEF8DC;border:2px solid #F5C842;border-radius:12px;padding:14px;margin-bottom:16px;">
+      <div style="font-size:14px;line-height:1.8;color:#2C2118;" id="sortHint"></div>
+    </div>
+    <div id="sortList"></div>
+    <div id="sortFail" style="display:none;background:#FEF3E8;border:2px solid #F7B89A;border-radius:14px;
+      padding:14px 16px;margin-bottom:8px;font-size:14px;line-height:1.75;color:#8a5a2e;font-weight:600;">
+      送出沒有成功，可能是網路不穩。<br>你的答案都還在，請再按一次送出。</div>
+    <button class="btn-next" id="b2b" disabled onclick="sortNext()">完成，送出 ✦</button>
+    <button class="btn-back" id="b2bback" onclick="sortBack()">← 回去修改答案</button>
+  </div>
+
+  <!-- S3：完成 -->
+  <div class="section" id="s3">
+    <div class="done-wrap">
+      <div class="done-icon">✦</div>
+      <div class="done-title">謝謝你完成了<br>前置探索！</div>
+      <div class="done-sub">
+        你的答案已經被記錄下來了。<br>
+        帶著你對自己的好奇，<br>
+        來到現場，我們一起往深處走。<br><br>
+        <strong>你的天賦地圖，我們一起來看見。</strong>
+      </div>
+      <div style="background:#F3EEFF;border:2px solid #C8B4E8;border-radius:16px;padding:20px;margin:28px 0 20px;">
+        <div style="font-size:15px;color:#7B5EA7;font-weight:700;margin-bottom:6px;">還有其他家人要填嗎？</div>
+        <div style="font-size:13.5px;color:#666;line-height:1.7;margin-bottom:16px;">
+          點下方按鈕，家庭編號會自動保留，<br>換下一位直接開始填寫就好。</div>
+        <button class="btn-next" style="margin:0;" onclick="nextPerson()">換下一位家人填寫 →</button>
+      </div>
+      <div class="done-tag">探索天賦優勢親子營 · 優勢寫作學院</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ⚠ 重新部署 Apps Script 後，請把下面這行的網址換成新的部署網址
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyuume0Vjlg9mw69EJPSQ5A2WFBoKjXPBVJDhaWozd-7swGR5Il0M1AXekUyI3PuVj8/exec';
+
+// 34題：分段洗牌排列（五行資訊僅供後台計算，畫面不顯示，順序無規律可辨識）
+const CARDS = [{"num": "10", "cn": "取悅", "sub1": "天生擅長結交新朋友", "sub2": "走進陌生場合，是我最愛的冒險", "element": "火"}, {"num": "27", "cn": "統籌", "sub1": "喜歡協調資源讓效率最大化", "sub2": "越複雜越有趣，亂中我自有序", "element": "金"}, {"num": "02", "cn": "理念", "sub1": "善於發現看似無關的事物之間的連結", "sub2": "創意跳躍是我最自然的思考方式", "element": "木"}, {"num": "17", "cn": "信仰", "sub1": "有堅定的核心價值觀", "sub2": "知道為什麼，才能承受任何挑戰", "element": "土"}, {"num": "33", "cn": "適應", "sub1": "活在當下，靈活應對變化", "sub2": "計劃趕不上變化，我最擅長變化", "element": "水"}, {"num": "34", "cn": "關聯", "sub1": "相信萬事萬物都有連結", "sub2": "沒有偶然，一切都有它的意義", "element": "水"}, {"num": "01", "cn": "學習", "sub1": "享受學習本身", "sub2": "求知的過程比結果更令我興奮", "element": "木"}, {"num": "14", "cn": "統率", "sub1": "天生具備領導者的氣場", "sub2": "面對衝突，我選擇直面而非迴避", "element": "火"}, {"num": "22", "cn": "伯樂", "sub1": "看見每個人尚未發揮的潛能", "sub2": "你的成長，是我最大的成就感", "element": "土"}, {"num": "23", "cn": "成就", "sub1": "每天都需要完成一些事情", "sub2": "勤奮是我的天性，不是我的選擇", "element": "金"}, {"num": "32", "cn": "包容", "sub1": "讓每個人都感到被接納", "sub2": "我的世界，沒有人是局外人", "element": "水"}, {"num": "25", "cn": "審慎", "sub1": "謹慎評估風險後才做決定", "sub2": "我不是猶豫，我是在確保萬無一失", "element": "金"}, {"num": "06", "cn": "分析", "sub1": "用邏輯和數據看穿事物真相", "sub2": "在複雜中尋找簡單，是我最享受的事", "element": "木"}, {"num": "21", "cn": "和諧", "sub1": "尋求共識，避免不必要的衝突", "sub2": "我們可以不同，但可以找到共鳴", "element": "土"}, {"num": "15", "cn": "行動", "sub1": "想到就做，行動是最好的答案", "sub2": "等待只是浪費，現在就是最佳時機", "element": "火"}, {"num": "31", "cn": "體諒", "sub1": "能感受他人的情緒與感受", "sub2": "你不說，我也知道你的感受", "element": "水"}, {"num": "20", "cn": "責任", "sub1": "交給我的事，我用全力承擔", "sub2": "承諾不是說說，是我的行動準則", "element": "土"}, {"num": "13", "cn": "自信", "sub1": "對自己的判斷有強烈信念", "sub2": "別人的質疑，只會讓我更確定自己", "element": "火"}, {"num": "03", "cn": "思維", "sub1": "享受深度思考與獨自沉潛", "sub2": "安靜是我最高效的充電時刻", "element": "木"}, {"num": "26", "cn": "排難", "sub1": "擅長找出問題並解決它", "sub2": "別人看到麻煩，我看到機會", "element": "金"}, {"num": "24", "cn": "專注", "sub1": "設定目標並全力以赴", "sub2": "鎖定了方向，其他都是雜音", "element": "金"}, {"num": "09", "cn": "溝通", "sub1": "擅長用語言和文字打動人心", "sub2": "你說的每一句話，都能讓人記住", "element": "火"}, {"num": "08", "cn": "戰略", "sub1": "任何局面都能迅速找到最佳路徑", "sub2": "我天生看得見別人看不見的選項", "element": "木"}, {"num": "19", "cn": "紀律", "sub1": "有序和準時是力量的來源", "sub2": "結構不是束縛，是我飛翔的翅膀", "element": "土"}, {"num": "28", "cn": "積極", "sub1": "天生帶來能量與熱情", "sub2": "我在的地方，氣氛就不一樣", "element": "水"}, {"num": "18", "cn": "公平", "sub1": "相信規則讓每個人都能起飛", "sub2": "一視同仁，是我給每個人的尊重", "element": "土"}, {"num": "29", "cn": "個別", "sub1": "洞察每個人的獨特之處", "sub2": "你不用配合我，因為我早就看見你了", "element": "水"}, {"num": "11", "cn": "競爭", "sub1": "沒有對手就沒有動力", "sub2": "我的目標是第一，不是其中一個", "element": "火"}, {"num": "07", "cn": "前瞻", "sub1": "對未來充滿想像與熱情", "sub2": "我的夢想能激勵周圍的人", "element": "木"}, {"num": "05", "cn": "回顧", "sub1": "理解現在，必先認識過去", "sub2": "歷史與背景是我做決定最重要的地圖", "element": "木"}, {"num": "16", "cn": "完美", "sub1": "把好的東西變得更好", "sub2": "我的標準不是完成，而是卓越", "element": "火"}, {"num": "30", "cn": "交往", "sub1": "珍視深度而真誠的關係", "sub2": "我不需要很多朋友，我要真正的知己", "element": "水"}, {"num": "04", "cn": "搜集", "sub1": "什麼都想收藏，什麼都覺得有用", "sub2": "知識、資源、人脈，都是我的寶庫", "element": "木"}, {"num": "12", "cn": "追求", "sub1": "渴望做出有意義的事", "sub2": "平凡的事不值得我全力以赴", "element": "火"}];
+
+const S = {role:'', member:'', fid:'', surname:'', given:'', uname:'', scores:{}};
+const ELS = ['木','火','土','金','水'];
+const PER_PAGE = 7;                       // 每頁題數（最後一頁 6 題）
+const PAGES = Math.ceil(34 / PER_PAGE);   // 共 5 頁
+let qPage = 0;                            // 目前在第幾頁（0-based）
+const DRAFT_KEY = 'kira_pretest_draft_v2';
+
+// 已作答題數：唯一來源就是 S.scores，不另外維護計數器
+function answeredCount(){ return Object.keys(S.scores).length; }
+function pageCards(i){ return CARDS.slice(i*PER_PAGE, (i+1)*PER_PAGE); }
+
+const MEMBER_OPTIONS = {
+  '家長': ['爸爸','媽媽'],
+  '孩子': ['大寶','二寶','三寶']
+};
+
+function prog(n){
+  document.getElementById('prog').style.width = (n/3*100)+'%';
+}
+function show(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+function go(n){
+  prog(n);
+  if(n===2){ qPage = 0; renderQ(); }
+  show('s'+n);
+}
+
+function setRole(r){
+  S.role=r;
+  S.member=''; // 切換角色時重置成員選擇，避免家長/孩子選項混淆
+  document.getElementById('rp').classList.toggle('active',r==='家長');
+  document.getElementById('rc').classList.toggle('active',r==='孩子');
+
+  const memberWrap = document.getElementById('memberWrap');
+  const memberRow = document.getElementById('memberRow');
+  memberWrap.style.display = 'block';
+  memberRow.innerHTML = '';
+
+  MEMBER_OPTIONS[r].forEach(m=>{
+    const card = document.createElement('div');
+    card.className = 'role-card';
+    card.id = 'mem-'+m;
+    card.onclick = ()=>setMember(m);
+    card.innerHTML = `<div class="rt">${m}</div>`;
+    memberRow.appendChild(card);
+  });
+
+  chk0();
+}
+
+function setMember(m){
+  S.member = m;
+  MEMBER_OPTIONS[S.role].forEach(opt=>{
+    document.getElementById('mem-'+opt).classList.toggle('active', opt===m);
+  });
+  chk0();
+}
+
+function normalizeFid(v){
+  // 去頭尾空白、全形轉半形、統一大寫、移除中間空白
+  return v.trim()
+    .replace(/[\uFF01-\uFF5E]/g, ch => String.fromCharCode(ch.charCodeAt(0) - 0xFEE0))
+    .replace(/\s+/g, '')
+    .toUpperCase();
+}
+
+function chk0(){
+  const raw = document.getElementById('fid').value;
+  S.fid = normalizeFid(raw);
+  S.surname = document.getElementById('usurname').value.trim().replace(/\s+/g,'');
+  S.given   = document.getElementById('ugiven').value.trim().replace(/\s+/g,'');
+  S.uname   = S.surname + S.given;
+  document.getElementById('b0').disabled = !(S.role && S.member && S.fid && S.surname && S.given);
+}
+
+// 離開欄位時把整理後的結果顯示回輸入框，讓家長看到最終格式
+function tidyFid(){
+  const el = document.getElementById('fid');
+  el.value = normalizeFid(el.value);
+  chk0();
+}
+
+function renderQ(){
+  const list=document.getElementById('qList');
+  list.innerHTML='';
+  pageCards(qPage).forEach((c)=>{
+    const idx = CARDS.indexOf(c);
+    const card=document.createElement('div');
+    card.className='scale-card' + (S.scores[c.num]!==undefined ? ' answered' : '');
+    card.id='qc'+c.num;
+    // 不顯示五行和關鍵詞，只顯示題號與情境描述句
+    card.innerHTML=`
+      <div class="scale-idx">第 ${idx+1} 題</div>
+      <div class="scale-def">${c.sub1}<br>${c.sub2}</div>
+      <div class="scale-row">
+        <div class="scale-label-l">不像</div>
+        <div class="scale-btns" id="sb${c.num}">
+          ${[1,2,3,4,5].map(v=>`<button class="scale-btn${S.scores[c.num]===v?' sel':''}" onclick="setScore('${c.num}',${v},this)">${v}</button>`).join('')}
+        </div>
+        <div class="scale-label-r">很像</div>
+      </div>`;
+    list.appendChild(card);
+  });
+  document.getElementById('qbadge').textContent = `天賦探索　第 ${qPage+1} / ${PAGES} 頁`;
+  const b2 = document.getElementById('b2');
+  b2.disabled = false;
+  b2.textContent = (qPage === PAGES-1) ? '完成，下一步 ✦' : '下一頁 →';
+  const qf = document.getElementById('qFail'); if(qf) qf.style.display='none';
+  document.getElementById('b2back').style.display = qPage === 0 ? 'none' : 'block';
+  document.getElementById('qWarn').style.display = 'none';
+  updateProgress();
+  window.scrollTo(0,0);
+}
+
+function updateProgress(){
+  document.getElementById('qprog').textContent = `${answeredCount()} / 34 完成`;
+}
+
+// 本頁未作答的題目（回傳題號陣列，1-based 供顯示）
+function pageMissing(i){
+  return pageCards(i).filter(c => S.scores[c.num] === undefined)
+                     .map(c => CARDS.indexOf(c) + 1);
+}
+
+function qNext(){
+  const miss = pageMissing(qPage);
+  if(miss.length){
+    const w = document.getElementById('qWarn');
+    w.innerHTML = `這一頁還有 <strong>${miss.length}</strong> 題沒有回答：第 ${miss.join('、')} 題<br>都回答完才能往下喔。`;
+    w.style.display = 'block';
+    // 捲到第一個未作答的題目
+    const first = pageCards(qPage).find(c => S.scores[c.num] === undefined);
+    document.getElementById('qc'+first.num).scrollIntoView({behavior:'smooth', block:'center'});
+    return;
+  }
+  if(qPage < PAGES-1){ qPage++; renderQ(); }
+  else { finishQuestions(); }
+}
+
+function qPrev(){
+  if(qPage > 0){ qPage--; renderQ(); }
+}
+
+// 最後總檢查：34 題必須齊全，缺任何一題就跳到那一頁
+function finishQuestions(){
+  for(let i=0;i<PAGES;i++){
+    const miss = pageMissing(i);
+    if(miss.length){
+      qPage = i; renderQ();
+      const w = document.getElementById('qWarn');
+      w.innerHTML = `第 ${miss.join('、')} 題還沒有回答，<br>幫你跳回這一頁補上。`;
+      w.style.display = 'block';
+      return;
+    }
+  }
+  goSortOrSubmit();
+}
+
+function setScore(num, val, btn){
+  S.scores[num]=val;
+  const group=document.getElementById('sb'+num);
+  group.querySelectorAll('.scale-btn').forEach(b=>b.classList.remove('sel'));
+  btn.classList.add('sel');
+  document.getElementById('qc'+num).classList.add('answered');
+  updateProgress();
+  document.getElementById('qWarn').style.display = 'none';
+  saveDraft();
+}
+
+// ═══ 作答草稿：手機被系統回收或誤觸重整時可接續 ═══
+function saveDraft(){
+  try{
+    localStorage.setItem(DRAFT_KEY, JSON.stringify({
+      role:S.role, member:S.member, fid:S.fid,
+      surname:S.surname, given:S.given, scores:S.scores, page:qPage, at:Date.now()
+    }));
+  }catch(e){ /* 無痕模式等情況忽略，不影響作答 */ }
+}
+
+function clearDraft(){
+  try{ localStorage.removeItem(DRAFT_KEY); }catch(e){}
+}
+
+// 開啟頁面時詢問是否接續（不自動還原——同一支手機可能換人填）
+function offerDraft(){
+  let d = null;
+  try{ const raw = localStorage.getItem(DRAFT_KEY); if(raw) d = JSON.parse(raw); }catch(e){ return; }
+  if(!d || !d.scores) return;
+  const n = Object.keys(d.scores).length;
+  if(n === 0 || n >= 34) { clearDraft(); return; }
+  const who = (d.surname||'') + (d.given||'');
+  const ok = confirm(`偵測到未完成的填寫紀錄${who ? '（' + who + '）' : ''}，已完成 ${n} / 34 題。\n\n要接續上次的進度嗎？\n（若不是你本人填的，請選取消）`);
+  if(!ok){ clearDraft(); return; }
+  S.role=d.role||''; S.member=d.member||''; S.fid=d.fid||'';
+  S.surname=d.surname||''; S.given=d.given||''; S.uname=S.surname+S.given;
+  S.scores=d.scores||{}; qPage=d.page||0;
+  document.getElementById('fid').value = S.fid;
+  document.getElementById('usurname').value = S.surname;
+  document.getElementById('ugiven').value = S.given;
+  if(S.role && S.member && S.fid && S.surname && S.given){
+    prog(2); renderQ(); show('s2');
+  }
+}
+
+function calcElements(){
+  // 五個五行各自得分和滿分
+  const els = ['木','火','土','金','水'];
+  const scores = {};
+  const maxes = {};
+  els.forEach(el=>{scores[el]=0; maxes[el]=0;});
+
+  CARDS.forEach(c=>{
+    const val = S.scores[c.num] || 0;
+    scores[c.element] += val;
+    maxes[c.element] += 5;
+  });
+
+  // 總得分
+  const totalScore = els.reduce((sum,el)=>sum+scores[el], 0);
+
+  // ── 兩層換算 ──
+  // 第一層：各行除以自己的滿分 → 消除題數不均（木火8題、金5題）
+  // 第二層：除以五個得分率的總和 → 消除個人給分習慣，總和必為100%
+  const rate = {};
+  els.forEach(el=>{ rate[el] = maxes[el] > 0 ? scores[el]/maxes[el] : 0; });
+  const rateSum = els.reduce((sum,el)=>sum+rate[el], 0);
+
+  const exact = {};   // 未四捨五入的精確值：供排序與後續計算
+  els.forEach(el=>{ exact[el] = rateSum > 0 ? rate[el]/rateSum*100 : 20; });
+
+  // 顯示用整數：最大餘數法，確保總和恰為100且不改變高低順序
+  const pct = {};
+  els.forEach(el=>{ pct[el] = Math.floor(exact[el]); });
+  let remain = 100 - els.reduce((sum,el)=>sum+pct[el], 0);
+  els.slice().sort((a,b) =>
+      ((exact[b]-Math.floor(exact[b])) - (exact[a]-Math.floor(exact[a])))
+      || (els.indexOf(a)-els.indexOf(b))
+    ).forEach(el=>{ if(remain > 0){ pct[el]++; remain--; } });
+
+  // 最高五行：精確值相同時，比該行擁有「本人最高分」的題數（高峰落在哪一行）
+  const myMax = Math.max(...CARDS.map(c => S.scores[c.num] || 0));
+  const peaks = {};
+  els.forEach(el=>{
+    peaks[el] = CARDS.filter(c => c.element===el && (S.scores[c.num]||0)===myMax).length;
+  });
+  const top = els.slice().sort((a,b) =>
+    (exact[b]-exact[a]) || (peaks[b]-peaks[a]) || (els.indexOf(a)-els.indexOf(b)))[0];
+
+  return {scores, maxes, pct, exact, peaks, top, totalScore};
+}
+
+
+// ═══ 排序頁：關鍵詞順序確認 ═══
+// 跨行的先後由五行比例決定，不問人。
+// 只有「同一行 × 同一分數」被整批收下、內部沒有先後時，才請本人排。
+//   mode='pick'  該行候選多過剩餘名額 → 挑出剩餘名額（挑的同時就決定順序）
+//   mode='order' 該行候選會全部進榜，但兩個以上 → 請他排先後
+//   mode='auto'  該行只有一個 → 不需詢問
+
+function buildSortGroups(){
+  const calc = calcElements();
+  // 走訪順序：精確佔比高者優先；並列時比該行的高峰題數，再退回木火土金水
+  const elOrder = ELS.slice().sort((a,b) =>
+    (calc.exact[b] - calc.exact[a]) || (calc.peaks[b] - calc.peaks[a])
+    || (ELS.indexOf(a) - ELS.indexOf(b)));
+
+  // 分數層由高到低：最高分那層取不滿3個時，要降到次高分再跑一輪
+  const tiers = [...new Set(CARDS.map(c => S.scores[c.num] || 0))].sort((a,b) => b-a);
+
+  const groups = [];
+  let filled = 0;
+  for(const tier of tiers){
+    for(const el of elOrder){
+      const cands = CARDS.filter(c => c.element === el && (S.scores[c.num]||0) === tier);
+      if(cands.length === 0) continue;
+      const remain = 3 - filled;
+      if(cands.length > remain){
+        groups.push({el, tier, pool:cands, need:remain, mode:'pick', picked:[]});
+        return groups;
+      }
+      groups.push({el, tier, pool:cands, need:cands.length,
+                   mode: cands.length > 1 ? 'order' : 'auto',
+                   picked: cands.length > 1 ? [] : [cands[0].num]});
+      filled += cands.length;
+      if(filled >= 3) return groups;
+    }
+  }
+  return groups;
+}
+
+let SORT_GROUPS = [];     // 全部分組（含 auto）
+let SORT_ROUNDS = [];     // 需要本人處理的分組
+let SORT_ROUND  = 0;      // 目前在第幾組
+
+function goSortOrSubmit(){
+  SORT_GROUPS = buildSortGroups();
+  SORT_ROUNDS = SORT_GROUPS.filter(g => g.mode !== 'auto');
+  SORT_ROUND = 0;
+  if(SORT_ROUNDS.length === 0){ submitForm(); return; }
+  renderRound();
+  show('s2b');
+}
+
+function renderRound(){
+  const g = SORT_ROUNDS[SORT_ROUND];
+  renderSortHeader(g);
+  renderSort(g);
+  const last = SORT_ROUND === SORT_ROUNDS.length - 1;
+  document.getElementById('b2b').textContent = last ? '完成，送出 ✦' : '下一組 →';
+  document.getElementById('b2bback').textContent =
+    SORT_ROUND === 0 ? '← 回去修改答案' : '← 上一組';
+  window.scrollTo(0,0);
+}
+
+function sortBack(){
+  if(SORT_ROUND > 0){ SORT_ROUND--; renderRound(); return; }
+  qPage = PAGES - 1;
+  renderQ();
+  show('s2');
+}
+
+function sortNext(){
+  if(SORT_ROUND < SORT_ROUNDS.length - 1){
+    SORT_ROUND++;
+    renderRound();
+  } else {
+    submitForm();
+  }
+}
+
+function renderSort(g){
+  const list = document.getElementById('sortList');
+  list.innerHTML = '';
+  g.pool.forEach(c => {
+    const idx = g.picked.indexOf(c.num);
+    const picked = idx >= 0;
+    const div = document.createElement('div');
+    div.style.cssText = `background:${picked?'#7B5EA7':'#fff'};border:2px solid ${picked?'#7B5EA7':'#D0C0F0'};
+      border-radius:14px;padding:14px 16px;margin-bottom:10px;cursor:pointer;transition:all .2s;
+      display:flex;align-items:center;gap:12px;`;
+    div.onclick = () => toggleSort(c.num);
+    div.innerHTML = `
+      <div style="width:32px;height:32px;border-radius:50%;flex-shrink:0;
+        background:${picked?'#F5C842':'#F0EAFA'};color:${picked?'#2C2118':'#B0A0D0'};
+        display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:900;">
+        ${picked ? idx+1 : '·'}</div>
+      <div style="flex:1;">
+        <div style="font-size:15px;font-weight:700;line-height:1.5;color:${picked?'#fff':'#2C2118'};">${c.sub1}</div>
+        <div style="font-size:13px;line-height:1.5;margin-top:3px;color:${picked?'rgba(255,255,255,.75)':'#888'};">${c.sub2}</div>
+      </div>`;
+    list.appendChild(div);
+  });
+  document.getElementById('b2b').disabled = g.picked.length < g.need;
+}
+
+function toggleSort(num){
+  const g = SORT_ROUNDS[SORT_ROUND];
+  const i = g.picked.indexOf(num);
+  if(i >= 0){
+    g.picked.splice(i, 1);
+  } else if(g.picked.length < g.need){
+    g.picked.push(num);
+  }
+  renderSort(g);
+}
+
+function renderSortHeader(g){
+  const NUM = {1:'一', 2:'兩', 3:'三'};
+  const n = NUM[g.need] || g.need;
+  const total = g.pool.length;
+  const multi = SORT_ROUNDS.length > 1
+    ? `<div style="font-size:13px;color:#7B5EA7;font-weight:700;margin-bottom:8px;">
+         第 ${SORT_ROUND+1} 組／共 ${SORT_ROUNDS.length} 組</div>` : '';
+
+  document.getElementById('sortLead').innerHTML = multi + (
+    g.mode === 'pick'
+      ? `<strong>最後一步！</strong><br>` +
+        `你身上有好多天賦特質，而且都很鮮明。<br>` +
+        `為了讓報告更貼近你，<br>` +
+        `想請你從這 <strong>${total}</strong> 個裡面，挑出<strong>最像你的${n}個</strong>。`
+      : `<strong>最後一步！</strong><br>` +
+        `這 <strong>${total}</strong> 個天賦特質，你身上都很鮮明。<br>` +
+        `想請你幫它們排個先後——<br>` +
+        `哪一個<strong>最像現在的你</strong>？`
+  );
+
+  document.getElementById('sortHint').innerHTML =
+    g.need > 1
+      ? `請依照「最像我」的程度，<strong>依序點選</strong>下面的敘述。<br>第一個點的就是第1名，點過的會標上號碼，<br>點錯可以再點一次取消。`
+      : `請點選<strong>最像你</strong>的那一個。<br>點錯可以再點一次取消。`;
+}
+
+// 最終三個關鍵詞（依五行序 + 行內自排）
+function finalKeywords(){
+  const out = [];
+  for(const g of SORT_GROUPS){
+    for(const num of g.picked){
+      const c = CARDS.find(x => x.num === num);
+      if(c && out.length < 3) out.push(c.cn);
+    }
+  }
+  return out;
+}
+
+function submitForm(){
+  // 沒有排序頁的人是從 s2 送出的，按鈕與失敗訊息都必須指向當前顯示的區塊
+  const onSort = document.getElementById('s2b').classList.contains('active');
+  const btn  = document.getElementById(onSort ? 'b2b' : 'b2');
+  const fail = document.getElementById(onSort ? 'sortFail' : 'qFail');
+  if(btn){ btn.disabled=true; btn.textContent='送出中…'; }
+
+  const calc = calcElements();
+  const payload = {
+    timestamp: new Date().toLocaleString('zh-TW'),
+    familyId: S.fid,
+    userName: S.uname,      // 全名（姓+名），供報告大標題使用
+    surname: S.surname,     // 姓
+    givenName: S.given,     // 名，供報告內文稱呼使用
+    role: S.role,
+    member: S.member,
+    topElement: calc.top,
+    wood_pct: calc.pct['木'],
+    fire_pct: calc.pct['火'],
+    earth_pct: calc.pct['土'],
+    metal_pct: calc.pct['金'],
+    water_pct: calc.pct['水'],
+    total_score: calc.totalScore,
+    manual_order: finalKeywords().join('、'),   // 最終三個關鍵詞，順序即為報告採用的順序
+  };
+
+  // 每題分數欄位直接附上關鍵詞，例如 "4（樂觀）"——問卷畫面不顯示，僅後台試算表看得到
+  CARDS.forEach(c=>{
+    const score = S.scores[c.num] || 0;
+    payload['q'+c.num] = score + '（' + c.cn + '）';
+  });
+
+  fetch(APPS_SCRIPT_URL, {method:'POST', body:JSON.stringify(payload)})
+    .then(()=>{ clearDraft(); showDone(); })
+    .catch(()=>{
+      // 送出失敗不可顯示完成畫面，否則資料靜默遺失且沒有人知道
+      if(btn){ btn.disabled=false; btn.textContent='再試一次 ✦'; }
+      if(fail){ fail.style.display='block'; fail.scrollIntoView({behavior:'smooth',block:'center'}); }
+    });
+}
+
+function showDone(){
+  prog(3); show('s3');
+}
+
+// 換下一位家人：保留家庭編號，其餘重置
+function nextPerson(){
+  const keepFid = S.fid;
+  S.role = ''; S.member = ''; S.surname = ''; S.given = ''; S.uname = ''; S.scores = {}; S.idx = 0;
+  S.fid = keepFid;
+  qPage = 0;
+  SORT_GROUPS = []; SORT_ROUNDS = []; SORT_ROUND = 0;
+  clearDraft();                                   // 務必清除，否則下一位會接到上一位的答案
+  ['sortFail','qFail'].forEach(id=>{ const e=document.getElementById(id); if(e) e.style.display='none'; });
+
+  // 清除身份選取狀態
+  document.getElementById('rp').classList.remove('active');
+  document.getElementById('rc').classList.remove('active');
+
+  // 收起並清空成員選項
+  const mw = document.getElementById('memberWrap');
+  const mr = document.getElementById('memberRow');
+  if(mr) mr.innerHTML = '';
+  if(mw) mw.style.display = 'none';
+
+  // 家庭編號自動帶入、姓名清空
+  document.getElementById('fid').value = keepFid;
+  document.getElementById('usurname').value = '';
+  document.getElementById('ugiven').value = '';
+  document.getElementById('b0').disabled = true;
+
+  prog(0); show('s0');
+  window.scrollTo(0,0);
+}
+
+// 頁面載入時檢查是否有未完成的草稿
+window.addEventListener('load', offerDraft);
+</script>
+</body>
+</html>
